@@ -13,8 +13,7 @@ CONNECTION_ARN = "arn:aws:codestar-connections:eu-central-1:355731635752:connect
 
 class PipelineStack(Stack):
 
- #   def __init__(self, scope: Construct, construct_id: str, service, **kwargs) -> None:
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, service, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         source_output = codepipeline.Artifact()
@@ -89,15 +88,15 @@ class PipelineStack(Stack):
             actions=[build_action]
         )
 
-        # deploy_action = actions.EcsDeployAction(
-        #     action_name="DeployAction",
-        #     service=service,
-        #     input=build_output,
-        #     deployment_timeout=Duration.minutes(60),
-        #     run_order=3
-        # )
-        #
-        # deploy_stage = pipeline.add_stage(
-        #     stage_name="deploy",
-        #     actions=[deploy_action],
-        # )
+        deploy_action = actions.EcsDeployAction(
+            action_name="DeployAction",
+            service=service,
+            input=build_output,
+            deployment_timeout=Duration.minutes(60),
+            run_order=3
+        )
+
+        deploy_stage = pipeline.add_stage(
+            stage_name="deploy",
+            actions=[deploy_action],
+        )
