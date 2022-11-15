@@ -46,4 +46,3 @@ class TsvEcsStack(Stack):
 
                                                                                  public_load_balancer=True)
         self.service = alb_fargate_service.service
-
