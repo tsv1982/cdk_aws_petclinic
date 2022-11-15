@@ -18,7 +18,7 @@ class CdkPipeline(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        source_output = pipelines.CodePipelineSource.connection("tsv1982/aws_cdk", "pipeline",
+        source_output = pipelines.CodePipelineSource.connection("tsv1982/cdk_aws_petclinic", "main",
                                                                 connection_arn="arn:aws:codestar-connections:eu-central-1:090146717911:connection/846fb039-cf68-47a4-b1f3-02d599d50af3"
                                                                 )
 
