@@ -41,8 +41,8 @@ class InfrastructureStage(Stage):
     def __init__(self, scope, id, *, env=None, outdir=None):
         super().__init__(scope, id, env=env, outdir=outdir)
 
-        networking_stack = NetworkingStack(self, "Networking")
-        rds_stack = RdsStack(self, "RdsStack", vpc=networking_stack.vpc, creds_arn=DB_CREDS_ARN)
-        ecs_stack = TsvEcsStack(self, "TsvEcsStack", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
+        networking_stack = NetworkingStack(self, "Networking_petclinic")
+        rds_stack = RdsStack(self, "RdsStack_petclinic", vpc=networking_stack.vpc, creds_arn=DB_CREDS_ARN)
+        ecs_stack = TsvEcsStack(self, "TsvEcsStack_petclinic", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
         ecs_stack.add_dependency(rds_stack)
-        PipelineStack(self, "PipelineStack", service=ecs_stack.service)
+        PipelineStack(self, "PipelineStack_petclinic", service=ecs_stack.service)
