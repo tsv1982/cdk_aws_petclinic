@@ -8,7 +8,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-CONNECTION_ARN = "arn:aws:codestar-connections:ap-northeast-1:571847562388:connection/200c13ec-a117-4efb-b81c-0b93cba32197"
+CONNECTION_ARN = "arn:aws:codestar-connections:eu-central-1:090146717911:connection/846fb039-cf68-47a4-b1f3-02d599d50af3"
 
 
 class PipelineStack(Stack):
@@ -25,10 +25,10 @@ class PipelineStack(Stack):
                                                       "phases": {
                                                           "pre_build": {
                                                               "commands": [
-                                                                  'REPOSITORY_URI=571847562388.dkr.ecr.eu-central-1.amazonaws.com/.venv-hello',
+                                                                  'REPOSITORY_URI=090146717911.dkr.ecr.eu-central-1.amazonaws.com/petclinic',
                                                                   'COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)',
                                                                   'IMAGE_TAG=${COMMIT_HASH:=latest}',
-                                                                  "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 571847562388.dkr.ecr.eu-central-1.amazonaws.com"
+                                                                  "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 090146717911.dkr.ecr.eu-central-1.amazonaws.com"
                                                               ]
                                                           },
                                                           "build": {"commands": [
@@ -36,7 +36,7 @@ class PipelineStack(Stack):
                                                               "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG",
                                                               "docker push $REPOSITORY_URI:$IMAGE_TAG",
                                                               "docker push $REPOSITORY_URI:latest",
-                                                              'printf \'[{"name":".venv-hello","imageUri":"%s"}]\' "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json'
+                                                              'printf \'[{"name":"petclinic","imageUri":"%s"}]\' "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json'
                                                           ]}},
                                                       'artifacts': {
                                                           'files': [
@@ -58,12 +58,12 @@ class PipelineStack(Stack):
             effect=iam.Effect.ALLOW,
             resources=["*"]))
 
-        pipeline = codepipeline.Pipeline(self, "Pipeline_hellow")
+        pipeline = codepipeline.Pipeline(self, "Pipeline_petclinic")
 
         source_action = actions.CodeStarConnectionsSourceAction(
             action_name="Source",
             owner="tsv1982",
-            repo="cdkPyHelloWorld",
+            repo="petclinic-docker-jenkins",
             branch="main",
             connection_arn=CONNECTION_ARN,
             output=source_output,

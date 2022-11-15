@@ -14,22 +14,22 @@ class TsvEcsStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, vpc: ec2.Vpc, db_secret: secrets.Secret, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        cluster = ecs.Cluster(self, "tsv_cluster_hellow", cluster_name="tsv_cluster_hellow", vpc=vpc)
+        cluster = ecs.Cluster(self, "tsv_cluster_petclinic", cluster_name="tsv_cluster_petclinic", vpc=vpc)
 
-        execution_role = iam.Role(self, "tsv_execution_role_hellow",
+        execution_role = iam.Role(self, "tsv_execution_role_petclinic",
                                   assumed_by=iam.ServicePrincipal("ecs-tasks.amazonaws.com"),
-                                  role_name="tsv_execution_role_hellow")
+                                  role_name="tsv_execution_role_petclinic")
         execution_role.add_to_policy(iam.PolicyStatement(effect=iam.Effect.ALLOW, resources=["*"],
                                                          actions=["ecr:GetAuthorizationToken",
                                                                   "ecr:BatchCheckLayerAvailability",
                                                                   "ecr:GetDownloadUrlForLayer", "ecr:BatchGetImage",
                                                                   "logs:CreateLogStream", "logs:PutLogEvents"]))
 
-        task_definition = ecs.FargateTaskDefinition(self, "tsv_task_definition_hellow", cpu=512, memory_limit_mib=2048,
-                                                    execution_role=execution_role, family="tsv_task_definition_hellow")
+        task_definition = ecs.FargateTaskDefinition(self, "tsv_task_definition_petclinic", cpu=512, memory_limit_mib=2048,
+                                                    execution_role=execution_role, family="tsv_task_definition_petclinic")
 
-        image = ecs.ContainerImage.from_registry("571847562388.dkr.ecr.eu-central-1.amazonaws.com/.venv-hello:latest")
-        container = task_definition.add_container(".venv-hello", image=image, secrets={
+        image = ecs.ContainerImage.from_registry("docker push 090146717911.dkr.ecr.eu-central-1.amazonaws.com/petclinic:latest")
+        container = task_definition.add_container("petclinic", image=image, secrets={
             "DB_HOST": ecs.Secret.from_secrets_manager(db_secret, 'host'),
             "DB_USER": ecs.Secret.from_secrets_manager(db_secret, 'username'),
             "DB_PASS": ecs.Secret.from_secrets_manager(db_secret, 'password'),
@@ -37,7 +37,7 @@ class TsvEcsStack(Stack):
                                                   logging=ecs.LogDriver.aws_logs(stream_prefix='stara'))
         container.add_port_mappings(ecs.PortMapping(container_port=8080))
 
-        alb_fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(self, ".venv-LB-hellow",
+        alb_fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(self, "venv-LB-petclinic",
                                                                                  cluster=cluster,
                                                                                  task_definition=task_definition,
                                                                                  desired_count=2,

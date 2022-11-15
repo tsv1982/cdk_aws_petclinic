@@ -11,7 +11,7 @@ from infra.lib.rds_stack import RdsStack
 from infra.lib.tsv_ecs_stack import TsvEcsStack
 from infra.lib.pipeline_stack import PipelineStack
 
-DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"
+DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:090146717911:secret:petclinic02-hf0IeK"
 
 
 class CdkPipeline(Stack):
@@ -19,14 +19,17 @@ class CdkPipeline(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         source_output = pipelines.CodePipelineSource.connection("tsv1982/aws_cdk", "pipeline",
-                                                                connection_arn="arn:aws:codestar-connections:ap-northeast-1:571847562388:connection/200c13ec-a117-4efb-b81c-0b93cba32197"
+                                                                connection_arn="arn:aws:codestar-connections:eu-central-1:090146717911:connection/846fb039-cf68-47a4-b1f3-02d599d50af3"
                                                                 )
 
         pipeline = pipelines.CodePipeline(self, "Pipeline",
                                           synth=pipelines.ShellStep("Synth",
                                                                     input=source_output,
                                                                     commands=["pip install -r requirements.txt",
-                                                                              "npm install -g aws-cdk", "cdk synth"]
+                                                                              "npm install -g aws-cdk",
+                                                                              "cdk synth",
+                                                                              "pip install install-jdk",
+                                                                              "pip install maven"]
                                                                     ),
                                           self_mutation=True,
                                           )
