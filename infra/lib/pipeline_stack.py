@@ -88,15 +88,15 @@ class PipelineStack(Stack):
             actions=[build_action]
         )
 
-        # deploy_action = actions.EcsDeployAction(
-        #     action_name="DeployAction",
-        #     service=service,
-        #     input=build_output,
-        #     deployment_timeout=Duration.minutes(60),
-        #     run_order=3
-        # )
-        #
-        # deploy_stage = pipeline.add_stage(
-        #     stage_name="deploy",
-        #     actions=[deploy_action],
-        # )
+        deploy_action = actions.EcsDeployAction(
+            action_name="DeployAction",
+            service=service,
+            input=build_output,
+            deployment_timeout=Duration.minutes(60),
+            run_order=3
+        )
+
+        deploy_stage = pipeline.add_stage(
+            stage_name="deploy",
+            actions=[deploy_action],
+        )
