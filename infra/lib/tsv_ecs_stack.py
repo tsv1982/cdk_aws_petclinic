@@ -28,7 +28,7 @@ class TsvEcsStack(Stack):
         task_definition = ecs.FargateTaskDefinition(self, "tsv_task_definition_petclinic", cpu=512, memory_limit_mib=2048,
                                                     execution_role=execution_role, family="tsv_task_definition_petclinic")
 
-        image = ecs.ContainerImage.from_registry("docker push 090146717911.dkr.ecr.eu-central-1.amazonaws.com/petclinic:latest")
+        image = ecs.ContainerImage.from_registry("docker push 355731635752.dkr.ecr.eu-central-1.amazonaws.com/petclinic:latest")
         container = task_definition.add_container("petclinic", image=image, secrets={
             "POSTGRES_PASSWORD": ecs.Secret.from_secrets_manager(db_secret, 'host'),
             "POSTGRES_USER": ecs.Secret.from_secrets_manager(db_secret, 'username'),

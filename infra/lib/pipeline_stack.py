@@ -8,7 +8,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-CONNECTION_ARN = "arn:aws:codestar-connections:eu-central-1:090146717911:connection/846fb039-cf68-47a4-b1f3-02d599d50af3"
+CONNECTION_ARN = "arn:aws:codestar-connections:eu-central-1:355731635752:connection/d6224ded-ed81-4288-bf81-0f84a6d90120"
 
 
 class PipelineStack(Stack):
@@ -25,10 +25,10 @@ class PipelineStack(Stack):
                                                       "phases": {
                                                           "pre_build": {
                                                               "commands": [
-                                                                  'REPOSITORY_URI=090146717911.dkr.ecr.eu-central-1.amazonaws.com/petclinic',
+                                                                  'REPOSITORY_URI=355731635752.dkr.ecr.eu-central-1.amazonaws.com/petclinic',
                                                                   'COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)',
                                                                   'IMAGE_TAG=${COMMIT_HASH:=latest}',
-                                                                  "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 090146717911.dkr.ecr.eu-central-1.amazonaws.com"
+                                                                  "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 355731635752.dkr.ecr.eu-central-1.amazonaws.com"
                                                               ]
                                                           },
                                                           "build": {"commands": [
