@@ -30,10 +30,10 @@ class TsvEcsStack(Stack):
 
         image = ecs.ContainerImage.from_registry("docker push 090146717911.dkr.ecr.eu-central-1.amazonaws.com/petclinic:latest")
         container = task_definition.add_container("petclinic", image=image, secrets={
-            "DB_HOST": ecs.Secret.from_secrets_manager(db_secret, 'host'),
-            "DB_USER": ecs.Secret.from_secrets_manager(db_secret, 'username'),
+            "POSTGRES_PASSWORD": ecs.Secret.from_secrets_manager(db_secret, 'host'),
+            "POSTGRES_USER": ecs.Secret.from_secrets_manager(db_secret, 'username'),
             "DB_PASS": ecs.Secret.from_secrets_manager(db_secret, 'password'),
-        }, environment={"DB_NAME": "postgres"},
+        }, environment={"POSTGRES_DB": "postgres"},
                                                   logging=ecs.LogDriver.aws_logs(stream_prefix='stara'))
         container.add_port_mappings(ecs.PortMapping(container_port=8080))
 
