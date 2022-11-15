@@ -43,8 +43,7 @@ class InfrastructureStage(Stage):
 
         networking_stack = NetworkingStack(self, "NetworkingPetclinic")
         rds_stack = RdsStack(self, "RdsStackPetclinic", vpc=networking_stack.vpc, creds_arn=DB_CREDS_ARN)
-        PipelineStack(self, "PipelineStackPetclinic")
         ecs_stack = TsvEcsStack(self, "TsvEcsStackPetclinic", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
         ecs_stack.add_dependency(rds_stack)
-#        PipelineStack(self, "PipelineStackPetclinic", service=ecs_stack.service)
+        PipelineStack(self, "PipelineStackPetclinic", service=ecs_stack.service)
 
