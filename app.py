@@ -5,7 +5,8 @@ import aws_cdk as cdk
 from infra.lib.CdkPipeline import CdkPipeline
 
 app = cdk.App()
-cdk_pipeline = CdkPipeline(app, "CdkPipelinePetclinic")
+
+cdk_pipeline = CdkPipeline(app, "CdkPipeline")
 
 
 app.synth()
